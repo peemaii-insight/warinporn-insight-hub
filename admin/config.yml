@@ -1,0 +1,71 @@
+# ============================================================
+# Decap CMS configuration (Option C — visual editing)
+# Edit articles from /admin/ without touching code.
+#
+# SETUP:
+#   1. Replace YOUR-GITHUB-USERNAME/YOUR-REPO below.
+#   2. Easiest auth on GitHub Pages: backend "github" + a small
+#      OAuth provider (e.g. the free Netlify "Git Gateway" or a
+#      Cloudflare Worker OAuth). See README for the 3 options.
+#   3. Visit https://YOUR-SITE/admin/ and log in with GitHub.
+# ============================================================
+backend:
+  name: github
+  repo: YOUR-GITHUB-USERNAME/YOUR-REPO
+  branch: main
+
+# Uploaded cover images land here; reference as assets/uploads/<file>
+media_folder: "assets/uploads"
+public_folder: "assets/uploads"
+
+# New entries created via "Add" go in as drafts you can publish later
+publish_mode: editorial_workflow
+
+collections:
+  - name: "insights"
+    label: "Insight Hub"
+    files:
+      - name: "articles"
+        label: "Articles (articles.json)"
+        file: "assets/articles.json"
+        format: "json"
+        description: "Every article. Toggle 'Draft' off to publish."
+        fields:
+          - label: "Site"
+            name: "site"
+            widget: "object"
+            fields:
+              - { label: "Author", name: "author", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Base URL", name: "baseUrl", widget: "string" }
+          - label: "Categories"
+            name: "categories"
+            widget: "list"
+            field: { label: "Category", name: "category", widget: "string" }
+          - label: "Articles"
+            name: "articles"
+            label_singular: "Article"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Slug (URL)", name: "slug", widget: "string", hint: "lowercase-with-dashes, no spaces" }
+              - { label: "SEO Meta Title", name: "metaTitle", widget: "string", required: false }
+              - { label: "SEO Meta Description", name: "metaDescription", widget: "text" }
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                options:
+                  - "Battery Industry Insight"
+                  - "Automotive Aftermarket"
+                  - "Marketing Strategy"
+                  - "Dealer Development"
+                  - "Business Growth"
+                  - "Leadership"
+              - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+              - { label: "Reading Time", name: "readingTime", widget: "string", default: "5 min read" }
+              - { label: "Cover Image", name: "cover", widget: "image", required: false, hint: "Optional — leave empty to use the styled placeholder" }
+              - { label: "Tags", name: "tags", widget: "list", required: false }
+              - { label: "Draft (hide from site)", name: "draft", widget: "boolean", default: true }
+              - { label: "Excerpt", name: "excerpt", widget: "text", hint: "1–2 sentences shown on cards" }
+              - { label: "Body (HTML)", name: "body", widget: "text", hint: "Full article. Use <p>, <h2>, <h3>, <ul><li>, <blockquote>." }

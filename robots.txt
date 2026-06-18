@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Replace the domain below with your live GitHub Pages URL
+Sitemap: https://warinporn.example.com/sitemap.xml
